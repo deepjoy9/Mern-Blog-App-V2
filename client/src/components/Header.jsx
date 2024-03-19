@@ -14,12 +14,20 @@ const Header = () => {
     });
   }, []);
 
-  function logout() {
-    fetch("http://localhost:4000/api/auth/logout", {
-      credentials: "include",
-      method: "POST",
-    });
-    setUserInfo(null);
+  async function logout() {
+    try {
+      const response = await fetch("http://localhost:4000/api/auth/logout", {
+        credentials: "include",
+        method: "POST",
+      });
+      if (response.ok) {
+        setUserInfo(null);
+      } else {
+        throw new Error("Failed to logout");
+      }
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
   }
 
   const username = userInfo?.username;
