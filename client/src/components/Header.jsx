@@ -4,6 +4,7 @@ import { UserContext } from "../contexts/UserContext";
 
 const Header = () => {
   const { userInfo, setUserInfo } = useContext(UserContext);
+
   useEffect(() => {
     fetch("http://localhost:4000/api/auth/profile", {
       credentials: "include",
