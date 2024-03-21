@@ -154,3 +154,19 @@ div.post-page a.edit-btn{
 a svg{
   height:20px;
 }
+/* ErrorPage */
+.error-container {
+  text-align: center;
+  margin-top: 50px;
+}
+
+.error-container h1 {
+  font-size: 36px;
+  color: black
+}
+
+.error-container p {
+  font-size: 18px;
+  color: #333;
+  margin-top: 20px;
+}
