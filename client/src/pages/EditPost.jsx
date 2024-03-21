@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import Editor from "../components/Editor";
+import { UserContext } from "../contexts/UserContext";
 
 const EditPost = () => {
+  const { userInfo } = useContext(UserContext);
+
   const { id } = useParams();
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
@@ -42,6 +45,11 @@ const EditPost = () => {
 
   if (redirect) {
     return <Navigate to={"/post/" + id} />;
+  }
+  // If user is not authenticated, redirect to login page
+  if (!userInfo) {
+    alert(" You are logged out !! Login first !!");
+    return <Navigate to={"/login"} />;
   }
 
   return (
