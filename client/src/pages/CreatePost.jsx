@@ -1,18 +1,26 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import Editor from "../components/Editor";
 import { UserContext } from "../contexts/UserContext";
 
 const CreatePost = () => {
   const { userInfo } = useContext(UserContext);
+  const location = useLocation();
 
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState("");
-  const [redirect, setRedirect] = useState("");
+  const [redirect, setRedirect] = useState(false);
+
+  useEffect(() => {
+    if (!userInfo) {
+      alert("You are logged out!!");
+      setRedirect(true);
+    }
+  }, [userInfo]);
 
   async function createNewPost(ev) {
     const data = new FormData();
@@ -31,14 +39,11 @@ const CreatePost = () => {
       setRedirect(true);
     }
   }
+
   if (redirect) {
     return <Navigate to={"/"} />;
   }
-  // If user is not authenticated, redirect to login page
-  if (!userInfo) {
-    alert(" You are logged out !! Login first !!");
-    return <Navigate to={"/login"} />;
-  }
+
   return (
     <form onSubmit={createNewPost}>
       <input

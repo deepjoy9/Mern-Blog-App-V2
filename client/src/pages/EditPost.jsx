@@ -14,6 +14,10 @@ const EditPost = () => {
   const [redirect, setRedirect] = useState(false);
 
   useEffect(() => {
+    if (!userInfo) {
+      alert("You are logged out!!");
+      setRedirect(true);
+    }
     fetch("http://localhost:4000/api/posts/" + id).then((response) => {
       response.json().then((postInfo) => {
         setTitle(postInfo.title);
@@ -21,7 +25,7 @@ const EditPost = () => {
         setSummary(postInfo.summary);
       });
     });
-  }, []);
+  }, [userInfo]);
 
   async function updatePost(ev) {
     ev.preventDefault();
@@ -42,14 +46,8 @@ const EditPost = () => {
       setRedirect(true);
     }
   }
-
   if (redirect) {
-    return <Navigate to={"/post/" + id} />;
-  }
-  // If user is not authenticated, redirect to login page
-  if (!userInfo) {
-    alert(" You are logged out !! Login first !!");
-    return <Navigate to={"/login"} />;
+    return <Navigate to={"/"} />;
   }
 
   return (
