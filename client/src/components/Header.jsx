@@ -22,6 +22,7 @@ const Header = () => {
         method: "POST",
       });
       if (response.ok) {
+        alert("You are logged out!!");
         setUserInfo(null);
       } else {
         throw new Error("Failed to logout");
