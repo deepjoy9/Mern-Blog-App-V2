@@ -1,26 +1,14 @@
-import React, { useContext, useEffect, useState } from "react";
-import ReactQuill from "react-quill";
+import React, { useState } from "react";
 import "react-quill/dist/quill.snow.css";
-import { Navigate, useLocation } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 import Editor from "../components/Editor";
-import { UserContext } from "../contexts/UserContext";
 
 const CreatePost = () => {
-  const { userInfo } = useContext(UserContext);
-  const location = useLocation();
-
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState("");
   const [files, setFiles] = useState("");
   const [redirect, setRedirect] = useState(false);
-
-  useEffect(() => {
-    if (!userInfo) {
-      alert("You are logged out!!");
-      setRedirect(true);
-    }
-  }, [userInfo]);
 
   async function createNewPost(ev) {
     const data = new FormData();
