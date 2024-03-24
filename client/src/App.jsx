@@ -23,6 +23,7 @@ function App() {
           <Route path="/post/:id" element={<PostPage />} />
           <Route path="/edit/:id" element={<ProtectedRoute Component={EditPost }/>} />
         </Route>
+        <Route path="/error" element={<ErrorPage />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
     </UserContextProvider>
