@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { formatISO9075 } from "date-fns";
 import { Link } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
@@ -8,10 +8,16 @@ const PostPage = () => {
   const [postInfo, setPostInfo] = useState(null);
   const { userInfo } = useContext(UserContext);
   const { id } = useParams();
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchPostData = async () => {
       try {
         const response = await fetch(`http://localhost:4000/api/posts/${id}`);
+        // Redirect to error page if post doesn't exist
+        if (!response.ok) {
+          navigate("/error");
+          return;
+        }
         const data = await response.json();
         setPostInfo(data);
       } catch (error) {
@@ -22,7 +28,7 @@ const PostPage = () => {
     fetchPostData();
   }, [id]);
 
-  if (!postInfo) return <div>Loading...</div>;
+  if (!postInfo) return null;
 
   return (
     <div className="post-page">
