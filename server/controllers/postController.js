@@ -66,6 +66,18 @@ exports.getPosts = async (req, res) => {
 
 exports.getPostById = async (req, res) => {
   const { id } = req.params;
-  const postDoc = await Post.findById(id).populate("author", ["username"]);
-  res.json(postDoc);
+  try {
+    const postDoc = await Post.findById(id).populate("author", ["username"]);
+    if (!postDoc) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+    res.json(postDoc);
+  } catch (error) {
+    // Handle CastError (invalid post ID)
+    if (error.name === "CastError") {
+      return res.status(404).json({ message: "Invalid post ID" });
+    }
+    console.error("Error fetching post by ID:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 };
