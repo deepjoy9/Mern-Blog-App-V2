@@ -40,6 +40,9 @@ const Header = () => {
         Dev Diary
       </Link>
       <nav>
+        <Link to="/" className="all-posts">
+          All Posts
+        </Link>
         {username && (
           <>
             <Link to="/create">Create New Post</Link>
