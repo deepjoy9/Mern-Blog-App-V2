@@ -24,6 +24,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         theme="colored"
         transition:Bounce
         bodyClassName="toastBody"
+        style={{ width: "auto" }}
       />
     </BrowserRouter>
   </React.StrictMode>
