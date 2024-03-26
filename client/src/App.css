@@ -9,6 +9,10 @@ body {
 img {
   max-width: 100%;
 }
+/* React Toastify */
+.toastBody{
+  white-space: nowrap;
+}
 /* Layout */
 main {
   padding: 10px;
