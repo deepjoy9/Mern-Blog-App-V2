@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
+import { toast } from "react-toastify";
 
 const Header = () => {
   const { userInfo, setUserInfo } = useContext(UserContext);
@@ -22,7 +23,7 @@ const Header = () => {
         method: "POST",
       });
       if (response.ok) {
-        alert("You are logged out!!");
+        toast.error("You have been successfully logged out.");
         setUserInfo(null);
       } else {
         throw new Error("Failed to logout");

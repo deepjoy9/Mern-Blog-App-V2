@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
+import { toast } from "react-toastify";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -19,10 +20,11 @@ const LoginPage = () => {
     if (response.ok) {
       response.json().then((userInfo) => {
         setUserInfo(userInfo);
+        toast.success("You have successfully logged in.");
         setRedirect(true);
       });
     } else {
-      alert("Wrong Credentials. Please try again");
+      toast.error("Wrong Credentials. Please try again");
     }
   }
   if (redirect) {

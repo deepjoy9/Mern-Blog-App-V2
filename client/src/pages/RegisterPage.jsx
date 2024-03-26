@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
@@ -15,10 +16,9 @@ const RegisterPage = () => {
     });
     if (response.status === 200) {
       setRedirect(true);
-
-      alert("Registration successful");
+      toast.success("Registration successful");
     } else {
-      alert("Registration failed");
+      toast.error("Registration failed");
     }
   }
   if (redirect) {
