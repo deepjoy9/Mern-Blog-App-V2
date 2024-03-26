@@ -46,7 +46,11 @@ const CreatePost = () => {
         value={summary}
         onChange={(ev) => setSummary(ev.target.value)}
       />
-      <input type="file" onChange={(ev) => setFiles(ev.target.files)} />
+      <input
+        type="file"
+        accept="image/*"
+        onChange={(ev) => setFiles(ev.target.files)}
+      />
       <Editor value={content} onChange={setContent} />
       <button style={{ marginTop: "5px" }}>Create Post</button>
     </form>
