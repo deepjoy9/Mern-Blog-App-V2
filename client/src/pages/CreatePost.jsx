@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "react-quill/dist/quill.snow.css";
 import { Navigate } from "react-router-dom";
 import Editor from "../components/Editor";
+import { POSTS_API } from "../utils/apiConstants";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
@@ -18,7 +19,7 @@ const CreatePost = () => {
     data.set("file", files[0]);
     ev.preventDefault();
 
-    const response = await fetch("http://localhost:4000/api/posts", {
+    const response = await fetch(POSTS_API, {
       method: "POST",
       body: data,
       credentials: "include",

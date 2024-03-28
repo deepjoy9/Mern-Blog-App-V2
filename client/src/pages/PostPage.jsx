@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { formatISO9075 } from "date-fns";
 import { Link } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
+import { POSTS_API } from "../utils/apiConstants";
 
 const PostPage = () => {
   const [postInfo, setPostInfo] = useState(null);
@@ -12,7 +13,7 @@ const PostPage = () => {
   useEffect(() => {
     const fetchPostData = async () => {
       try {
-        const response = await fetch(`http://localhost:4000/api/posts/${id}`);
+        const response = await fetch(`${POSTS_API}/${id}`);
         // Redirect to error page if post doesn't exist
         if (!response.ok) {
           navigate("/error");

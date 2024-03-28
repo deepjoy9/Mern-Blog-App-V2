@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { REGISTER_API } from "../utils/apiConstants";
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
@@ -9,7 +10,7 @@ const RegisterPage = () => {
 
   async function register(ev) {
     ev.preventDefault();
-    const response = await fetch("http://localhost:4000/api/auth/register", {
+    const response = await fetch(REGISTER_API, {
       method: "POST",
       body: JSON.stringify({ username, password }),
       headers: { "Content-Type": "application/json" },

@@ -2,12 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import { toast } from "react-toastify";
+import { LOGOUT_API, USER_PROFILE_API } from "../utils/apiConstants";
 
 const Header = () => {
   const { userInfo, setUserInfo } = useContext(UserContext);
 
   useEffect(() => {
-    fetch("http://localhost:4000/api/auth/profile", {
+    fetch(USER_PROFILE_API, {
       credentials: "include",
     }).then((response) => {
       response.json().then((userInfo) => {
@@ -18,7 +19,7 @@ const Header = () => {
 
   async function logout() {
     try {
-      const response = await fetch("http://localhost:4000/api/auth/logout", {
+      const response = await fetch(LOGOUT_API, {
         credentials: "include",
         method: "POST",
       });
