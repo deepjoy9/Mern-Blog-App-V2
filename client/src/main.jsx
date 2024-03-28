@@ -6,6 +6,10 @@ import "./App.css";
 import { BrowserRouter } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "@fontsource/outfit";
+import "@fontsource/roboto";
+import "@fontsource/inter";
+import "@fontsource/poppins";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>

@@ -1,6 +1,7 @@
 /* App */
 * {
   box-sizing: border-box;
+  font-family: "Poppins", "Outfit", "Roboto", "Inter";
 }
 body {
   color: #222;
