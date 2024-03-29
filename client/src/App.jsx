@@ -9,6 +9,7 @@ import CreatePost from "./pages/CreatePost";
 import PostPage from "./pages/PostPage";
 import EditPost from "./pages/EditPost";
 import ErrorPage from "./pages/ErrorPage";
+import MyPostsPage from "./pages/MyPostsPage";
 import ProtectedRoute from "./pages/ProtectedRoute";
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/create" element={<ProtectedRoute Component={CreatePost}/>} />
           <Route path="/post/:id" element={<PostPage />} />
           <Route path="/edit/:id" element={<ProtectedRoute Component={EditPost }/>} />
+          <Route path="/myposts" element={<ProtectedRoute Component={MyPostsPage }/>} />
           <Route path="/error" element={<ErrorPage />} />
           <Route path="*" element={<ErrorPage />} />
         </Route>

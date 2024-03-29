@@ -48,6 +48,7 @@ const Header = () => {
         {username && (
           <>
             <Link to="/create">Create New Post</Link>
+            <Link to="/myposts">My Posts</Link>
             <a onClick={logout}>Logout</a>
           </>
         )}
