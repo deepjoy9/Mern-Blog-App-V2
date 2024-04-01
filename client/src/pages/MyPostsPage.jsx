@@ -1,16 +1,32 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Post from "../components/Post";
 import { POSTS_API } from "../utils/apiConstants";
+import { UserContext } from "../contexts/UserContext";
 
-const IndexPage = () => {
+const MyPostsPage = () => {
+  const { userInfo } = useContext(UserContext);
   const [posts, setPosts] = useState([]);
+
   useEffect(() => {
-    const response = fetch("http://localhost:4000/api/posts/myposts").then((response) => {
-      response.json().then((posts) => {
+    if (userInfo && userInfo.id) {
+      fetchPosts(userInfo.id);
+    }
+  }, [userInfo]);
+
+  const fetchPosts = async (userId) => {
+    try {
+      const response = await fetch(`${POSTS_API}/myposts/${userId}`);
+      if (response.ok) {
+        const posts = await response.json();
         setPosts(posts);
-      });
-    });
-  }, []);
+      } else {
+        console.error("Failed to fetch posts:", response.statusText);
+      }
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    }
+  };
+
   return (
     <>
       {posts.length > 0 &&
@@ -19,4 +35,4 @@ const IndexPage = () => {
   );
 };
 
-export default IndexPage;
+export default MyPostsPage;
