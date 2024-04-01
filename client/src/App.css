@@ -142,9 +142,10 @@ div.post-page div.content p {
 div.content li {
   margin-bottom: 10px;
 }
-div.edit-row {
-  text-align: center;
-  margin-bottom: 20px;
+div.edit-delete-row {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
 }
 div.post-page a.edit-btn {
   background-color: #333;
@@ -156,20 +157,52 @@ div.post-page a.edit-btn {
   border-radius: 5px;
   text-decoration: none;
 }
-a svg {
+a svg,
+button svg {
   height: 20px;
+}
+div.post-page button.delete-btn {
+  background-color: #ff5555;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #fff;
+  padding: 15px 30px;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  width: auto;
+  font-size: 16px;
+}
+.delete-btn:hover {
+  background-color: #dd4444;
+}
+.delete-confirmation p {
+  margin-bottom: 10px;
+}
+.delete-confirmation button {
+  margin: 5px;
+  width: auto;
+}
+.delete-confirmation button:hover {
+  background-color: #dd4444;
+}
+.edit-delete-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
 }
 /* ErrorPage */
 .error-container {
   text-align: center;
   margin-top: 50px;
 }
-
 .error-container h1 {
   font-size: 36px;
   color: black;
 }
-
 .error-container p {
   font-size: 18px;
   color: #333;
