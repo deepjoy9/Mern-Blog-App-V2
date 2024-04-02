@@ -7,6 +7,7 @@ const {
   getPosts,
   getPostById,
   getMyPosts,
+  deletePost,
 } = require("../controllers/postController");
 
 router.post("/", uploadMiddleware.single("file"), createPost);
@@ -14,5 +15,6 @@ router.put("/", uploadMiddleware.single("file"), updatePost);
 router.get("/", getPosts);
 router.get("/:id", getPostById);
 router.get("/myposts/:id", getMyPosts);
+router.delete("/:id", deletePost);
 
 module.exports = router;

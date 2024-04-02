@@ -86,15 +86,45 @@ exports.getMyPosts = async (req, res) => {
   const { id } = req.params;
   try {
     // Find all posts by the author ID
-    const postDocs = await Post.find({ author: id }).populate("author", [
-      "username",
-    ]).sort({ createdAt: -1 });
+    const postDocs = await Post.find({ author: id })
+      .populate("author", ["username"])
+      .sort({ createdAt: -1 });
     if (!postDocs || postDocs.length === 0) {
       return res.status(404).json({ message: "No posts found for this user" });
     }
     res.json(postDocs);
   } catch (error) {
     console.error("Error fetching posts by author ID:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+exports.deletePost = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const postDoc = await Post.findById(id);
+    if (!postDoc) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+    // Check if the user making the request is the author of the post
+    const { token } = req.cookies;
+    jwt.verify(token, secret, {}, async (err, info) => {
+      if (err) throw err;
+
+      // If the user is not the author of the post, return an error
+      const isAuthor =
+        JSON.stringify(postDoc.author) === JSON.stringify(info.id);
+      if (!isAuthor) {
+        return res
+          .status(401)
+          .json({ message: "You are not authorized to delete this post" });
+      }
+      // If the user is the author of the post, proceed with deletion
+      await Post.findByIdAndDelete(id);
+      res.json({ message: "Post deleted successfully" });
+    });
+  } catch (error) {
+    console.error("Error deleting post:", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };

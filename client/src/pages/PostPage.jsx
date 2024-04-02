@@ -11,11 +11,11 @@ const PostPage = () => {
   const [deleteConfirmation, setDeleteConfirmation] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
+
   useEffect(() => {
     const fetchPostData = async () => {
       try {
         const response = await fetch(`${POSTS_API}/${id}`);
-        // Redirect to error page if post doesn't exist
         if (!response.ok) {
           navigate("/error");
           return;
@@ -26,13 +26,20 @@ const PostPage = () => {
         console.error("Error fetching post data:", error);
       }
     };
-
     fetchPostData();
   }, [id]);
 
   const handleDelete = async () => {
     try {
-      console.log("Deleted post");
+      const response = await fetch(`${POSTS_API}/${id}`, {
+        method: "DELETE",
+        credentials: "include",
+      });
+      if (response.ok) {
+        navigate("/");
+      } else {
+        console.error("Failed to delete post");
+      }
     } catch (error) {
       console.error("Error deleting post:", error);
     }
@@ -96,7 +103,7 @@ const PostPage = () => {
                 className="delete-btn"
                 onClick={() => setDeleteConfirmation(false)}
               >
-                No, cancel
+                Cancel
               </button>
             </div>
           )}
