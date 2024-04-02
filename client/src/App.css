@@ -208,3 +208,10 @@ div.post-page button.delete-btn {
   color: #333;
   margin-top: 20px;
 }
+/* MyPostsPage */
+.no-posts {
+  text-align: center;
+  margin-top: 50px;
+  font-size: 18px;
+  color: black;
+}
