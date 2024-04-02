@@ -6,6 +6,7 @@ import { UserContext } from "../contexts/UserContext";
 const MyPostsPage = () => {
   const { userInfo } = useContext(UserContext);
   const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (userInfo && userInfo.id) {
@@ -24,13 +25,23 @@ const MyPostsPage = () => {
       }
     } catch (error) {
       console.error("Error fetching posts:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <>
-      {posts.length > 0 &&
-        posts.map((post) => <Post key={post._id} {...post} />)}
+      {loading ? (
+        <p>Loading...</p>
+      ) : posts.length > 0 ? (
+        posts.map((post) => <Post key={post._id} {...post} />)
+      ) : (
+        <div className="no-posts">
+          <p>Looks like you haven't created any posts yet.</p>
+          <p> Create a new post!</p>
+        </div>
+      )}
     </>
   );
 };
