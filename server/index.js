@@ -1,11 +1,16 @@
+// Load environment variables from .env file
 require("dotenv").config();
+
+// Import necessary packages
 const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const connectDB = require("./db/connectDB");
 
+// Initialize Express app
 const app = express();
 
+// Middleware setup
 app.use(cors({ credentials: true, origin: process.env.CORS_ORIGIN }));
 app.use(express.json());
 app.use(cookieParser());
@@ -19,8 +24,10 @@ const postRoutes = require("./routes/postRoutes");
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 
+// Connect to MongoDB database
 connectDB()
   .then(() => {
+    // Start the Express server
     app.listen(process.env.PORT || 8000, () => {
       console.log("Server is running");
     });
