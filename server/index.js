@@ -3,23 +3,25 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const connectDB = require("./db/connectDB");
-const authRoutes = require("./routes/authRoutes");
-const postRoutes = require("./routes/postRoutes");
 
 const app = express();
 
-app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
+app.use(cors({ credentials: true, origin: process.env.CORS_ORIGIN }));
 app.use(express.json());
 app.use(cookieParser());
 app.use("/uploads", express.static(__dirname + "/uploads"));
 
-// Register routes
+// Routes import
+const authRoutes = require("./routes/authRoutes");
+const postRoutes = require("./routes/postRoutes");
+
+// Routes Declaration
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 
 connectDB()
   .then(() => {
-    app.listen(4000, () => {
+    app.listen(process.env.PORT || 8000, () => {
       console.log("Server is running");
     });
   })
