@@ -1,9 +1,9 @@
-export const REGISTER_API = "http://localhost:4000/api/auth/register";
+export const REGISTER_API = String(import.meta.env.VITE_REGISTER_API);
 
-export const LOGIN_API = "http://localhost:4000/api/auth/login";
+export const LOGIN_API = String(import.meta.env.VITE_LOGIN_API);
 
-export const LOGOUT_API = "http://localhost:4000/api/auth/logout";
+export const LOGOUT_API = String(import.meta.env.VITE_LOGOUT_API);
 
-export const USER_PROFILE_API = "http://localhost:4000/api/auth/profile";
+export const USER_PROFILE_API = String(import.meta.env.VITE_USER_PROFILE_API);
 
-export const POSTS_API = "http://localhost:4000/api/posts";
+export const POSTS_API = String(import.meta.env.VITE_POSTS_API);
