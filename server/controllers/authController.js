@@ -42,7 +42,8 @@ exports.login = async (req, res) => {
 exports.profile = (req, res) => {
   const { token } = req.cookies;
   if (!token) {
-    return res.status(401).json({ error: 'Unauthorized' });
+    // return res.status(401).json({ error: 'Unauthorized' });
+    return res.send({ result: 'Token is not valid' });
   }
   jwt.verify(token, secret, {}, (err, info) => {
     if (err) throw err;
