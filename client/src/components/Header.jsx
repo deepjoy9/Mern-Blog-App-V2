@@ -7,14 +7,22 @@ import { LOGOUT_API, USER_PROFILE_API } from "../utils/apiConstants";
 const Header = () => {
   const { userInfo, setUserInfo } = useContext(UserContext);
 
-  useEffect(() => {
-    fetch(USER_PROFILE_API, {
-      credentials: "include",
-    }).then((response) => {
-      response.json().then((userInfo) => {
-        setUserInfo(userInfo);
+  async function fetchUserProfile() {
+    try {
+      const response = await fetch(USER_PROFILE_API, {
+        credentials: "include",
       });
-    });
+      if (!response.ok) {
+        throw new Error("Network response was not ok.");
+      }
+      const userInfo = await response.json();
+      setUserInfo(userInfo);
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
+  }
+  useEffect(() => {
+    fetchUserProfile();
   }, []);
 
   async function logout() {
