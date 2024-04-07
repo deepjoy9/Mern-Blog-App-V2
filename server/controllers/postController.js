@@ -2,8 +2,10 @@ const Post = require("../models/Post.model");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
 const secret = process.env.SECRET_KEY;
+const mongoose = require("mongoose");
 
 exports.createPost = async (req, res) => {
+  mongoose.connect(process.env.DB_CONNECTION);
   if (req.file) {
     const { originalname, path } = req.file;
     const parts = originalname.split(".");
@@ -28,6 +30,7 @@ exports.createPost = async (req, res) => {
 };
 
 exports.updatePost = async (req, res) => {
+  mongoose.connect(process.env.DB_CONNECTION);
   let newPath = null;
   if (req.file) {
     const { originalname, path } = req.file;
@@ -56,6 +59,7 @@ exports.updatePost = async (req, res) => {
 };
 
 exports.getPosts = async (req, res) => {
+  mongoose.connect(process.env.DB_CONNECTION);
   res.json(
     await Post.find()
       .populate("author", ["username"])
@@ -65,6 +69,7 @@ exports.getPosts = async (req, res) => {
 };
 
 exports.getPostById = async (req, res) => {
+  mongoose.connect(process.env.DB_CONNECTION);
   const { id } = req.params;
   try {
     const postDoc = await Post.findById(id).populate("author", ["username"]);
@@ -83,6 +88,7 @@ exports.getPostById = async (req, res) => {
 };
 
 exports.getMyPosts = async (req, res) => {
+  mongoose.connect(process.env.DB_CONNECTION);
   const { id } = req.params;
   try {
     // Find all posts by the author ID
@@ -100,6 +106,7 @@ exports.getMyPosts = async (req, res) => {
 };
 
 exports.deletePost = async (req, res) => {
+  mongoose.connect(process.env.DB_CONNECTION);
   const { id } = req.params;
   try {
     const postDoc = await Post.findById(id);

@@ -2,8 +2,10 @@ const User = require("../models/User.model");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const secret = process.env.SECRET_KEY;
+const mongoose = require("mongoose");
 
 exports.register = async (req, res) => {
+  mongoose.connect(process.env.DB_CONNECTION);
   const { username, password } = req.body;
   const salt = bcrypt.genSaltSync(10);
   try {
@@ -18,6 +20,7 @@ exports.register = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+  mongoose.connect(process.env.DB_CONNECTION);
   const { username, password } = req.body;
   const userDoc = await User.findOne({ username });
   if (!userDoc) {
@@ -40,6 +43,7 @@ exports.login = async (req, res) => {
 };
 
 exports.profile = (req, res) => {
+  mongoose.connect(process.env.DB_CONNECTION);
   const { token } = req.cookies;
   if (!token) {
     // return res.status(401).json({ error: 'Unauthorized' });
