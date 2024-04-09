@@ -60,5 +60,5 @@ exports.profile = (req, res) => {
 };
 
 exports.logout = (req, res) => {
-  res.cookie("token", "").json("ok");
+  res.clearCookie("token").status(200).json("Logout success!");
 };
