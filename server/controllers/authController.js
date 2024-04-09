@@ -35,7 +35,7 @@ exports.login = async (req, res) => {
       const expiryDate = new Date(Date.now() + 3600000); // 1 hour
       res
         .cookie("token", token, {
-          sameSite: "none",
+          sameSite: process.env.NODE_ENV === "PRODUCTION" ? "none" : "lax",
           secure: process.env.NODE_ENV === "PRODUCTION",
           expires: expiryDate,
         })
@@ -64,8 +64,8 @@ exports.profile = (req, res) => {
 exports.logout = (req, res) => {
   res
     .clearCookie("token", {
-      sameSite: "None", // Set to None for cross-origin requests
-      secure: process.env.NODE_ENV === "production", // Requires HTTPS
+      sameSite: process.env.NODE_ENV === "PRODUCTION" ? "none" : "lax",
+      secure: process.env.NODE_ENV === "PRODUCTION", 
     })
     .status(200)
     .json("Logout success!");
