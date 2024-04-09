@@ -32,13 +32,12 @@ exports.login = async (req, res) => {
     //Logged in
     jwt.sign({ username, id: userDoc._id }, secret, {}, (err, token) => {
       if (err) throw err;
-      //const expiryDate = new Date(Date.now() + 3600000); // 1 hour
+      const expiryDate = new Date(Date.now() + 3600000); // 1 hour
       res
         .cookie("token", token, {
-          //sameSite: process.env.NODE_ENV === "PRODUCTION" ? "none" : "lax",
-          sameSite: "lax",
+          sameSite: process.env.NODE_ENV === "PRODUCTION" ? "none" : "lax",
           secure: process.env.NODE_ENV === "PRODUCTION",
-          //expires: expiryDate,
+          expires: expiryDate,
         })
         .json({
           id: userDoc._id,
