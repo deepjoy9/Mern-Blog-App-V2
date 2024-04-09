@@ -32,10 +32,15 @@ exports.login = async (req, res) => {
     //Logged in
     jwt.sign({ username, id: userDoc._id }, secret, {}, (err, token) => {
       if (err) throw err;
-      res.cookie("token", token).json({
-        id: userDoc._id,
-        username,
-      });
+      res
+        .cookie("token", token, {
+          sameSite: process.env.NODE_ENV === "PRODUCTION" ? "none" : "lax",
+          secure: process.env.NODE_ENV === "PRODUCTION",
+        })
+        .json({
+          id: userDoc._id,
+          username,
+        });
     });
   } else {
     res.status(400).json("Wrong Credentials");
@@ -47,7 +52,7 @@ exports.profile = (req, res) => {
   const { token } = req.cookies;
   if (!token) {
     // return res.status(401).json({ error: 'Unauthorized' });
-    return res.send({ result: 'Token is not valid' });
+    return res.send({ result: "Token is not valid" });
   }
   jwt.verify(token, secret, {}, (err, info) => {
     if (err) throw err;
