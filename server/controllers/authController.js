@@ -51,8 +51,7 @@ exports.profile = (req, res) => {
   mongoose.connect(process.env.DB_CONNECTION);
   const { token } = req.cookies;
   if (!token) {
-    // return res.status(401).json({ error: 'Unauthorized' });
-    return res.send({ result: "Token is not valid" });
+    return res.status(401).json({ error: "Token is not valid" });
   }
   jwt.verify(token, secret, {}, (err, info) => {
     if (err) throw err;
