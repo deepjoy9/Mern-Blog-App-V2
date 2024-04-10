@@ -8,7 +8,7 @@ const {
   getMyPosts,
   deletePost,
 } = require("../controllers/postController");
-const upload = require("../middlewares/uploadMiddleware");
+const upload = require("../middlewares/multerMiddleware");
 
 // Route for creating a new post
 router.post("/", upload.single("file"), createPost);
