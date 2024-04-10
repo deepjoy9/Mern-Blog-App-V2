@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const uploadMiddleware = require("../middlewares/uploadMiddleware");
 const {
   createPost,
   updatePost,
