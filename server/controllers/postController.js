@@ -1,8 +1,8 @@
 const Post = require("../models/Post.model");
 const fs = require("fs");
 const jwt = require("jsonwebtoken");
+const uploadOnCloudinary = require("../utils/cloudinary.js");
 const secret = process.env.SECRET_KEY;
-const mongoose = require("mongoose");
 
 exports.createPost = async (req, res) => {
   if (req.file) {
@@ -12,6 +12,7 @@ exports.createPost = async (req, res) => {
     newPath = path + "." + ext;
     fs.renameSync(path, newPath);
   }
+  const coverImage = await uploadOnCloudinary(newPath);
 
   const { token } = req.cookies;
   jwt.verify(token, secret, {}, async (err, info) => {
@@ -21,7 +22,7 @@ exports.createPost = async (req, res) => {
       title,
       summary,
       content,
-      cover: newPath,
+      cover: coverImage?.url || "",
       author: info.id,
     });
     res.json(postDoc);
@@ -37,11 +38,13 @@ exports.updatePost = async (req, res) => {
     newPath = path + "." + ext;
     fs.renameSync(path, newPath);
   }
+  const coverImage = await uploadOnCloudinary(newPath);
   const { token } = req.cookies;
   jwt.verify(token, secret, {}, async (err, info) => {
     if (err) throw err;
     const { id, title, summary, content } = req.body;
     const postDoc = await Post.findById(id);
+    console.log(postDoc.cover);
     const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(info.id);
     if (!isAuthor) {
       return res.status(400).json("you are not the author");
@@ -50,7 +53,7 @@ exports.updatePost = async (req, res) => {
       title,
       summary,
       content,
-      cover: newPath ? newPath : postDoc.cover,
+      cover: coverImage?.url || postDoc.cover,
     });
     res.json("Post updated successfully");
   });

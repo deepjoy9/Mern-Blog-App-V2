@@ -9,12 +9,13 @@ const {
   getMyPosts,
   deletePost,
 } = require("../controllers/postController");
+const upload = require("../middlewares/uploadMiddleware");
 
 // Route for creating a new post
-router.post("/", uploadMiddleware.single("file"), createPost);
+router.post("/", upload.single("file"), createPost);
 
 // Route for updating an existing post
-router.put("/", uploadMiddleware.single("file"), updatePost);
+router.put("/", upload.single("file"), updatePost);
 
 // Route for getting all posts
 router.get("/", getPosts);
