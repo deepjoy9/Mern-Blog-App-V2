@@ -10,8 +10,10 @@ const CreatePost = () => {
   const [content, setContent] = useState("");
   const [files, setFiles] = useState("");
   const [redirect, setRedirect] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   async function createNewPost(ev) {
+    setLoading(true);
     const data = new FormData();
     data.set("title", title);
     data.set("summary", summary);
@@ -24,8 +26,10 @@ const CreatePost = () => {
       body: data,
       credentials: "include",
     });
+
     if (response.ok) {
       setRedirect(true);
+      setLoading(false);
     }
   }
 
@@ -53,7 +57,9 @@ const CreatePost = () => {
         onChange={(ev) => setFiles(ev.target.files)}
       />
       <Editor value={content} onChange={setContent} />
-      <button style={{ marginTop: "5px" }}>Create Post</button>
+      <button style={{ marginTop: "5px" }}>
+        {loading ? "Loading..." : "Create Post"}
+      </button>
     </form>
   );
 };

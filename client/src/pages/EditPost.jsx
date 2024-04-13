@@ -10,6 +10,7 @@ const EditPost = () => {
   const [content, setContent] = useState("");
   const [files, setFiles] = useState("");
   const [redirect, setRedirect] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     fetch(`${POSTS_API}/${id}`).then((response) => {
@@ -22,6 +23,7 @@ const EditPost = () => {
   }, []);
 
   async function updatePost(ev) {
+    setLoading(true);
     ev.preventDefault();
     const data = new FormData();
     data.set("title", title);
@@ -38,6 +40,7 @@ const EditPost = () => {
     });
     if (response.ok) {
       setRedirect(true);
+      setLoading(false);
     }
   }
   if (redirect) {
@@ -64,7 +67,9 @@ const EditPost = () => {
         onChange={(ev) => setFiles(ev.target.files)}
       />
       <Editor onChange={setContent} value={content} />
-      <button style={{ marginTop: "5px" }}>Update post</button>
+      <button style={{ marginTop: "5px" }}>
+        {loading ? "Loading..." : "Update post"}
+      </button>
     </form>
   );
 };
