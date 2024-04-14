@@ -242,20 +242,16 @@ div.shimmer-post div.shimmer-image {
 }
 div.shimmer-post div.shimmer-texts h2.shimmer-title {
   height: 88px;
-  width: 528px;
+  width: 100%;
   background-color: rgb(226 232 240);
   border-radius: 5px;
 }
-div.shimmer-post p.shimmer-info {
-  display: flex;
-  height: 16.8px;
-  width: 528px;
-  background-color: rgb(226 232 240);
-  border-radius: 5px;
-}
+div.shimmer-post p.shimmer-info,
 div.shimmer-post p.shimmer-summary {
-  height: 22.4px;
-  width: 528px;
+  height: 20px;
+  width: 100%;
   background-color: rgb(226 232 240);
   border-radius: 5px;
+  margin: 0;
+  margin-bottom: 10px;
 }
