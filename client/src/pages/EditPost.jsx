@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Navigate, useParams } from "react-router-dom";
 import Editor from "../components/Editor";
 import { POSTS_API } from "../utils/apiConstants";
+import { toast } from "react-toastify";
 
 const EditPost = () => {
   const { id } = useParams();
@@ -22,8 +23,18 @@ const EditPost = () => {
     });
   }, []);
 
+  // Function to check if content is empty
+  function isEmptyContent(content) {
+    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
+    return strippedContent === "" || strippedContent === "<br>";
+  }
+
   async function updatePost(ev) {
     ev.preventDefault();
+    if (!title || !summary || isEmptyContent(content)) {
+      toast.error("Please fill in all sections !!");
+      return;
+    }
     setLoading(true);
     const data = new FormData();
     data.set("title", title);
