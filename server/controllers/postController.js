@@ -5,67 +5,92 @@ const uploadOnCloudinary = require("../utils/cloudinary.js");
 const secret = process.env.SECRET_KEY;
 
 exports.createPost = async (req, res) => {
-  if (req.file) {
-    const { originalname, path } = req.file;
-    const parts = originalname.split(".");
-    const ext = parts[parts.length - 1];
-    newPath = path + "." + ext;
-    fs.renameSync(path, newPath);
-  }
-  const coverImage = await uploadOnCloudinary(newPath);
+  try {
+    if (req.file) {
+      const { originalname, path } = req.file;
+      const parts = originalname.split(".");
+      const ext = parts[parts.length - 1];
+      newPath = path + "." + ext;
+      fs.renameSync(path, newPath);
+    }
 
-  const { token } = req.cookies;
-  jwt.verify(token, secret, {}, async (err, info) => {
-    if (err) throw err;
-    const { title, summary, content } = req.body;
-    const postDoc = await Post.create({
-      title,
-      summary,
-      content,
-      cover: coverImage?.url || "",
-      author: info.id,
+    const coverImage = await uploadOnCloudinary(newPath);
+    const { token } = req.cookies;
+    jwt.verify(token, secret, {}, async (err, info) => {
+      if (err) {
+        console.error("JWT verification error:", err);
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      const { title, summary, content } = req.body;
+      const postDoc = await Post.create({
+        title,
+        summary,
+        content,
+        cover: coverImage?.url || "",
+        author: info.id,
+      });
+      res.json(postDoc);
     });
-    res.json(postDoc);
-  });
+  } catch (error) {
+    console.error("Error creating post:", error);
+    res.status(500).json({ error: "Server Error" });
+  }
 };
 
 exports.updatePost = async (req, res) => {
-  let newPath = null;
-  if (req.file) {
-    const { originalname, path } = req.file;
-    const parts = originalname.split(".");
-    const ext = parts[parts.length - 1];
-    newPath = path + "." + ext;
-    fs.renameSync(path, newPath);
-  }
-  const coverImage = await uploadOnCloudinary(newPath);
-  const { token } = req.cookies;
-  jwt.verify(token, secret, {}, async (err, info) => {
-    if (err) throw err;
-    const { id, title, summary, content } = req.body;
-    const postDoc = await Post.findById(id);
-    console.log(postDoc.cover);
-    const isAuthor = JSON.stringify(postDoc.author) === JSON.stringify(info.id);
-    if (!isAuthor) {
-      return res.status(400).json("you are not the author");
+  try {
+    let newPath = null;
+    if (req.file) {
+      const { originalname, path } = req.file;
+      const parts = originalname.split(".");
+      const ext = parts[parts.length - 1];
+      newPath = path + "." + ext;
+      fs.renameSync(path, newPath);
     }
-    await Post.findByIdAndUpdate(id, {
-      title,
-      summary,
-      content,
-      cover: coverImage?.url || postDoc.cover,
+
+    const coverImage = await uploadOnCloudinary(newPath);
+    const { token } = req.cookies;
+    jwt.verify(token, secret, {}, async (err, info) => {
+      if (err) {
+        console.error("JWT verification error:", err);
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      const { id, title, summary, content } = req.body;
+      const postDoc = await Post.findById(id);
+      console.log(postDoc.cover);
+      const isAuthor =
+        JSON.stringify(postDoc.author) === JSON.stringify(info.id);
+      if (!isAuthor) {
+        return res
+          .status(403)
+          .json({ error: "You are not the author of this post" });
+      }
+      await Post.findByIdAndUpdate(id, {
+        title,
+        summary,
+        content,
+        cover: coverImage?.url || postDoc.cover,
+      });
+      res.json("Post updated successfully");
     });
-    res.json("Post updated successfully");
-  });
+  } catch (error) {
+    console.error("Error updating post:", error);
+    res.status(500).json({ error: "Server Error" });
+  }
 };
 
 exports.getPosts = async (req, res) => {
-  res.json(
-    await Post.find()
+  try {
+    const posts = await Post.find()
       .populate("author", ["username"])
       .sort({ createdAt: -1 })
-      .limit(20)
-  );
+      .limit(20);
+
+    res.json(posts);
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    res.status(500).json({ error: "Server Error" });
+  }
 };
 
 exports.getPostById = async (req, res) => {
