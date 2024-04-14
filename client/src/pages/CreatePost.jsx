@@ -25,7 +25,6 @@ const CreatePost = () => {
     data.set("summary", summary);
     data.set("content", content);
     data.set("file", files[0]);
-    ev.preventDefault();
 
     const response = await fetch(POSTS_API, {
       method: "POST",
@@ -35,8 +34,8 @@ const CreatePost = () => {
 
     if (response.ok) {
       setRedirect(true);
-      setLoading(false);
     }
+    setLoading(false);
   }
 
   if (redirect) {

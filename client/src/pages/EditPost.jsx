@@ -23,8 +23,8 @@ const EditPost = () => {
   }, []);
 
   async function updatePost(ev) {
-    setLoading(true);
     ev.preventDefault();
+    setLoading(true);
     const data = new FormData();
     data.set("title", title);
     data.set("summary", summary);
@@ -40,8 +40,8 @@ const EditPost = () => {
     });
     if (response.ok) {
       setRedirect(true);
-      setLoading(false);
     }
+    setLoading(false);
   }
   if (redirect) {
     return <Navigate to={"/"} />;
