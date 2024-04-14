@@ -1,14 +1,16 @@
-import React from 'react'
-import Header from './Header'
-import { Outlet } from 'react-router-dom'
+import React, { Suspense } from "react";
+import Header from "./Header";
+import { Outlet } from "react-router-dom";
+import ShimmerList from "./ShimmerUI";
 
 const Layout = () => {
   return (
     <main>
-        <Header/>
-        <Outlet/>
+      <Header />
+      <Suspense fallback={<ShimmerList />} />
+      <Outlet />
     </main>
-  )
-}
+  );
+};
 
-export default Layout
+export default Layout;
