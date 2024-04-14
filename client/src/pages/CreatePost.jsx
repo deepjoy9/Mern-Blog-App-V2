@@ -3,6 +3,7 @@ import "react-quill/dist/quill.snow.css";
 import { Navigate } from "react-router-dom";
 import Editor from "../components/Editor";
 import { POSTS_API } from "../utils/apiConstants";
+import { toast } from "react-toastify";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
@@ -13,6 +14,11 @@ const CreatePost = () => {
   const [loading, setLoading] = useState(false);
 
   async function createNewPost(ev) {
+    ev.preventDefault();
+    if (!title || !summary || !content || !files.length) {
+      toast.error("Please fill in all sections !!");
+      return;
+    }
     setLoading(true);
     const data = new FormData();
     data.set("title", title);
