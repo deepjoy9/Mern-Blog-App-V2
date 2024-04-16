@@ -34,33 +34,45 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const { username, password } = req.body;
+    if (!username || !password) {
+      return res
+        .status(400)
+        .json({ error: "Username and password are required !!" });
+    }
     const userDoc = await User.findOne({ username });
     if (!userDoc) {
-      return res.status(400).json({ message: "User not found" });
+      return res
+        .status(400)
+        .json({ error: "Invalid username or password. Please try again." });
     }
     const passOk = bcrypt.compareSync(password, userDoc.password);
 
-    if (passOk) {
-      jwt.sign({ username, id: userDoc._id }, secret, {}, (err, token) => {
-        if (err) {
-          console.error("Error generating JWT:", err);
-          return res.status(500).json({ error: "Internal Server Error" });
-        }
-        const expiryDate = new Date(Date.now() + 3600000); // 1 hour
-        res
-          .cookie("token", token, {
-            sameSite: "none",
-            secure: true,
-            expires: expiryDate,
-          })
-          .json({
-            id: userDoc._id,
-            username,
-          });
-      });
-    } else {
-      res.status(400).json({ error: "Wrong credentials" });
+    if (!passOk) {
+      return res
+        .status(400)
+        .json({ error: "Invalid username or password. Please try again." });
     }
+
+    jwt.sign({ username, id: userDoc._id }, secret, {}, (err, token) => {
+      if (err) {
+        console.error("Error generating JWT:", err);
+        return res
+          .status(500)
+          .json({ error: "Internal Server Error. Please try again later." });
+      }
+
+      const expiryDate = new Date(Date.now() + 3600000); // 1 hour
+      res
+        .cookie("token", token, {
+          sameSite: "none",
+          secure: true,
+          expires: expiryDate,
+        })
+        .json({
+          id: userDoc._id,
+          username,
+        });
+    });
   } catch (error) {
     console.error("Error logging in:", error);
     res.status(500).json({ error: "Internal Server Error" });
