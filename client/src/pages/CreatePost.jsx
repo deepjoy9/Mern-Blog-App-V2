@@ -15,27 +15,37 @@ const CreatePost = () => {
 
   async function createNewPost(ev) {
     ev.preventDefault();
-    if (!title || !summary || !content || !files.length) {
-      toast.error("Please fill in all sections !!");
-      return;
-    }
-    setLoading(true);
-    const data = new FormData();
-    data.set("title", title);
-    data.set("summary", summary);
-    data.set("content", content);
-    data.set("file", files[0]);
+    try {
+      setLoading(true);
+      const data = new FormData();
+      data.set("title", title);
+      data.set("summary", summary);
+      data.set("content", content);
+      data.set("file", files[0]);
 
-    const response = await fetch(POSTS_API, {
-      method: "POST",
-      body: data,
-      credentials: "include",
-    });
+      const response = await fetch(POSTS_API, {
+        method: "POST",
+        body: data,
+        credentials: "include",
+      });
 
-    if (response.ok) {
+      if (!response.ok) {
+        const errorMessage = await response.json();
+        throw new Error(
+          errorMessage.error || "Failed to create post. Please try again later."
+        );
+      }
+      // Post created successfully
       setRedirect(true);
+      toast.success("Post created successfully!");
+    } catch (error) {
+      console.error("Error creating post:", error.message);
+      toast.error(
+        error.message || "An unexpected error occurred. Please try again later."
+      );
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
 
   if (redirect) {
