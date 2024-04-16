@@ -12,19 +12,25 @@ const RegisterPage = () => {
   async function register(ev) {
     ev.preventDefault();
     setLoading(true);
-    const response = await fetch(REGISTER_API, {
-      method: "POST",
-      body: JSON.stringify({ username, password }),
-      headers: { "Content-Type": "application/json" },
-    });
-    if (response.status === 200) {
+    try {
+      const response = await fetch(REGISTER_API, {
+        method: "POST",
+        body: JSON.stringify({ username, password }),
+        headers: { "Content-Type": "application/json" },
+      });
+      const responseData = await response.json();
+      if (!response.ok) {
+        throw new Error(responseData.error);
+      }
       setRedirect(true);
-      toast.success("Registration successful");
-    } else {
-      toast.error("Registration failed");
+      toast.success("User registered successfully");
+    } catch (error) {
+      console.error("Error during registration:", error.message);
+      toast.error(error.message || "An unexpected error occurred");
     }
     setLoading(false);
   }
+
   if (redirect) {
     return <Navigate to={"/login"} />;
   }
