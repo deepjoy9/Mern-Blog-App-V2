@@ -6,12 +6,15 @@ const secret = process.env.SECRET_KEY;
 
 exports.createPost = async (req, res) => {
   try {
+    let newPath;
     if (req.file) {
       const { originalname, path } = req.file;
       const parts = originalname.split(".");
       const ext = parts[parts.length - 1];
       newPath = path + "." + ext;
       fs.renameSync(path, newPath);
+    } else {
+      return res.status(400).json({ error: "All sections are required !!" });
     }
 
     const coverImage = await uploadOnCloudinary(newPath);
@@ -19,9 +22,16 @@ exports.createPost = async (req, res) => {
     jwt.verify(token, secret, {}, async (err, info) => {
       if (err) {
         console.error("JWT verification error:", err);
-        return res.status(401).json({ error: "Unauthorized" });
+        return res
+          .status(401)
+          .json({ error: "Session expired or invalid. Please log in again." });
       }
       const { title, summary, content } = req.body;
+      if (!title || !summary || !content) {
+        return res.status(400).json({
+          error: "All sections are required !!",
+        });
+      }
       const postDoc = await Post.create({
         title,
         summary,
@@ -33,7 +43,7 @@ exports.createPost = async (req, res) => {
     });
   } catch (error) {
     console.error("Error creating post:", error);
-    res.status(500).json({ error: "Server Error" });
+    res.status(500).json({ error: "Server Error. Please try again later." });
   }
 };
 
