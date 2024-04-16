@@ -7,9 +7,11 @@ const RegisterPage = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   async function register(ev) {
     ev.preventDefault();
+    setLoading(true);
     const response = await fetch(REGISTER_API, {
       method: "POST",
       body: JSON.stringify({ username, password }),
@@ -21,6 +23,7 @@ const RegisterPage = () => {
     } else {
       toast.error("Registration failed");
     }
+    setLoading(false);
   }
   if (redirect) {
     return <Navigate to={"/login"} />;
@@ -40,7 +43,7 @@ const RegisterPage = () => {
         value={password}
         onChange={(ev) => setPassword(ev.target.value)}
       />
-      <button>Register</button>
+      <button>{loading ? "Loading..." : "Register"}</button>
     </form>
   );
 };

@@ -9,9 +9,11 @@ const LoginPage = () => {
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
   const { setUserInfo } = useContext(UserContext);
+  const [loading, setLoading] = useState(false);
 
   async function login(ev) {
     ev.preventDefault();
+    setLoading(true);
     const response = await fetch(LOGIN_API, {
       method: "POST",
       body: JSON.stringify({ username, password }),
@@ -27,6 +29,7 @@ const LoginPage = () => {
     } else {
       toast.error("Wrong Credentials. Please try again");
     }
+    setLoading(false);
   }
   if (redirect) {
     return <Navigate to={"/"} />;
@@ -46,7 +49,7 @@ const LoginPage = () => {
         value={password}
         onChange={(ev) => setPassword(ev.target.value)}
       />
-      <button>Login</button>
+      <button>{loading ? "Loading..." : "Login"}</button>
     </form>
   );
 };
