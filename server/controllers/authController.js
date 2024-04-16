@@ -5,6 +5,11 @@ const secret = process.env.SECRET_KEY;
 
 exports.register = async (req, res) => {
   const { username, password } = req.body;
+  if (!username || !password) {
+    return res
+      .status(400)
+      .json({ error: "Username and password are required !!" });
+  }
   const salt = bcrypt.genSaltSync(10);
   try {
     const userDoc = await User.create({
@@ -14,7 +19,15 @@ exports.register = async (req, res) => {
     res.json(userDoc);
   } catch (error) {
     console.error("Error registering user:", error);
-    res.status(400).json({ error: "Registration failed. Please try again." });
+    // MongoDB duplicate key error
+    if (error.code === 11000) {
+      return res.status(400).json({
+        error: "Username already exists. Please choose a different one.",
+      });
+    }
+    res
+      .status(500)
+      .json({ error: "Registration failed. Please try again later." });
   }
 };
 
