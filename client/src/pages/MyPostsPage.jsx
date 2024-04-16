@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import Post from "../components/Post";
 import { POSTS_API } from "../utils/apiConstants";
 import { UserContext } from "../contexts/UserContext";
+import ShimmerList from "../components/ShimmerUI";
 
 const MyPostsPage = () => {
   const { userInfo } = useContext(UserContext);
@@ -33,7 +34,7 @@ const MyPostsPage = () => {
   return (
     <>
       {loading ? (
-        <p>Loading...</p>
+        <ShimmerList />
       ) : posts.length > 0 ? (
         posts.map((post) => <Post key={post._id} {...post} />)
       ) : (
