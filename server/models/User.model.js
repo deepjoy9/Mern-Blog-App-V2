@@ -10,7 +10,17 @@ const UserSchema = new Schema(
       lowercase: true,
       trim: true,
     },
-    password: { type: String, required: [true, "Password is required"] },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
   },
   {
     timestamps: true,

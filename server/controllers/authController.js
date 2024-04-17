@@ -4,11 +4,9 @@ const jwt = require("jsonwebtoken");
 const secret = process.env.SECRET_KEY;
 
 exports.register = async (req, res) => {
-  const { username, password } = req.body;
-  if (!username || !password) {
-    return res
-      .status(400)
-      .json({ error: "Username and password are required !!" });
+  const { username, email, password } = req.body;
+  if (!username || !password || !email) {
+    return res.status(400).json({ error: "Please fill in all fields !!" });
   }
   // Validate username length
   if (username.length < 4 || username.length > 20) {
@@ -28,6 +26,7 @@ exports.register = async (req, res) => {
   try {
     const userDoc = await User.create({
       username,
+      email,
       password: bcrypt.hashSync(password, salt),
     });
     res.json(userDoc);
