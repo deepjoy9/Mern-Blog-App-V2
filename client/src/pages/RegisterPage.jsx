@@ -5,6 +5,7 @@ import { REGISTER_API } from "../utils/apiConstants";
 
 const RegisterPage = () => {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -15,7 +16,7 @@ const RegisterPage = () => {
     try {
       const response = await fetch(REGISTER_API, {
         method: "POST",
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ username, email, password }),
         headers: { "Content-Type": "application/json" },
       });
       const responseData = await response.json();
@@ -42,6 +43,12 @@ const RegisterPage = () => {
         placeholder="username"
         value={username}
         onChange={(ev) => setUsername(ev.target.value)}
+      />
+      <input
+        type="email"
+        placeholder="email"
+        value={email}
+        onChange={(ev) => setEmail(ev.target.value)}
       />
       <input
         type="password"
