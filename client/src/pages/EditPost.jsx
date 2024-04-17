@@ -23,37 +23,42 @@ const EditPost = () => {
     });
   }, []);
 
-  // Function to check if content is empty
-  function isEmptyContent(content) {
-    const strippedContent = content.replace(/<[^>]*>/g, "").trim();
-    return strippedContent === "" || strippedContent === "<br>";
-  }
-
   async function updatePost(ev) {
     ev.preventDefault();
-    if (!title || !summary || isEmptyContent(content)) {
-      toast.error("Please fill in all sections !!");
-      return;
-    }
-    setLoading(true);
-    const data = new FormData();
-    data.set("title", title);
-    data.set("summary", summary);
-    data.set("content", content);
-    data.set("id", id);
-    if (files?.[0]) {
-      data.set("file", files?.[0]);
-    }
-    const response = await fetch(POSTS_API, {
-      method: "PUT",
-      body: data,
-      credentials: "include",
-    });
-    if (response.ok) {
+    try {
+      setLoading(true);
+      const data = new FormData();
+      data.set("title", title);
+      data.set("summary", summary);
+      data.set("content", content);
+      data.set("id", id);
+      if (files?.[0]) {
+        data.set("file", files?.[0]);
+      }
+      const response = await fetch(POSTS_API, {
+        method: "PUT",
+        body: data,
+        credentials: "include",
+      });
+      if (!response.ok) {
+        const errorMessage = await response.json();
+        throw new Error(
+          errorMessage.error || "Failed to update post. Please try again later."
+        );
+      }
+      // Post updated successfully
       setRedirect(true);
+      toast.success("Post updated successfully!");
+    } catch (error) {
+      console.error("Error updating post:", error.message);
+      toast.error(
+        error.message || "An unexpected error occurred. Please try again later."
+      );
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   }
+
   if (redirect) {
     return <Navigate to={"/"} />;
   }
