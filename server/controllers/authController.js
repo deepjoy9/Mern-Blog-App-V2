@@ -10,14 +10,14 @@ exports.register = async (req, res) => {
       .status(400)
       .json({ error: "Username and password are required !!" });
   }
-  // Validate username format
+  // Validate username length
   if (username.length < 4 || username.length > 20) {
     return res
       .status(400)
       .json({ error: "Username should be between 4 and 20 characters long." });
   }
 
-  // Validate username format
+  // Validate password length
   if (password.length < 6) {
     return res
       .status(400)
