@@ -63,10 +63,26 @@ exports.updatePost = async (req, res) => {
     jwt.verify(token, secret, {}, async (err, info) => {
       if (err) {
         console.error("JWT verification error:", err);
-        return res.status(401).json({ error: "Unauthorized" });
+        return res
+          .status(401)
+          .json({ error: "Session expired or invalid. Please log in again." });
       }
       const { id, title, summary, content } = req.body;
+      if (!title || !summary) {
+        return res.status(400).json({
+          error: "All sections are required !!",
+        });
+      }
+      const strippedContent = content.replace(/<[^>]*>/g, "").trim();
+      if (strippedContent === "" || strippedContent === "<br>") {
+        return res.status(400).json({
+          error: "All sections are required !!",
+        });
+      }
       const postDoc = await Post.findById(id);
+      if (!postDoc) {
+        return res.status(404).json({ error: "Post not found." });
+      }
       console.log(postDoc.cover);
       const isAuthor =
         JSON.stringify(postDoc.author) === JSON.stringify(info.id);
@@ -85,7 +101,7 @@ exports.updatePost = async (req, res) => {
     });
   } catch (error) {
     console.error("Error updating post:", error);
-    res.status(500).json({ error: "Server Error" });
+    res.status(500).json({ error: "Server Error. Please try again later." });
   }
 };
 
