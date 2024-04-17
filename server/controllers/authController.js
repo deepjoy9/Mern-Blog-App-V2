@@ -10,6 +10,20 @@ exports.register = async (req, res) => {
       .status(400)
       .json({ error: "Username and password are required !!" });
   }
+  // Validate username format
+  if (username.length < 4 || username.length > 20) {
+    return res
+      .status(400)
+      .json({ error: "Username should be between 4 and 20 characters long." });
+  }
+
+  // Validate username format
+  if (password.length < 6) {
+    return res
+      .status(400)
+      .json({ error: "Password should be at least 6 characters long." });
+  }
+
   const salt = bcrypt.genSaltSync(10);
   try {
     const userDoc = await User.create({
