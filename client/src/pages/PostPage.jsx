@@ -54,7 +54,7 @@ const PostPage = () => {
       <div className="author">
         by @{postInfo.author ? postInfo.author.username : "Unknown"}
       </div>
-      {userInfo && userInfo.id === postInfo.author._id && (
+      {userInfo && postInfo.author && userInfo.id === postInfo.author._id && (
         <div className="edit-delete-container">
           <div className="edit-delete-row">
             <Link className="edit-btn" to={`/edit/${postInfo._id}`}>
