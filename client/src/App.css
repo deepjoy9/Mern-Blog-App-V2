@@ -10,16 +10,24 @@ body {
 img {
   max-width: 100%;
 }
+
 /* React Toastify */
 .toastBody {
   white-space: nowrap;
 }
+@media screen and (max-width: 768px) {
+  .toastBody {
+    white-space: normal;
+  }
+}
+
 /* Layout */
 main {
   padding: 10px;
   max-width: 1000px;
   margin: 0 auto;
 }
+
 /* Header */
 header {
   display: flex;
@@ -40,6 +48,7 @@ header nav {
   display: flex;
   gap: 15px;
 }
+
 /* Post */
 div.post {
   display: grid;
@@ -82,6 +91,7 @@ div.post p.summary {
   margin: 10px 0;
   line-height: 1.4rem;
 }
+
 /* LoginPage & RegisterPage */
 form.login,
 form.register {
@@ -110,6 +120,7 @@ form.login h1,
 form.register h1 {
   text-align: center;
 }
+
 /* PostPage */
 div.post-page div.image {
   max-height: 300px;
@@ -201,6 +212,7 @@ div.post-page button.delete-btn {
   align-items: center;
   margin-bottom: 10px;
 }
+
 /* ErrorPage */
 .error-container {
   text-align: center;
@@ -215,6 +227,7 @@ div.post-page button.delete-btn {
   color: #333;
   margin-top: 20px;
 }
+
 /* MyPostsPage */
 .no-posts {
   text-align: center;
