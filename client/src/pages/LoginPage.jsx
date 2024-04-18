@@ -5,32 +5,11 @@ import { toast } from "react-toastify";
 import { LOGIN_API } from "../utils/apiConstants";
 
 const LoginPage = () => {
-  const [username, setUsername] = useState("");
+  const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
   const [redirect, setRedirect] = useState(false);
   const { setUserInfo } = useContext(UserContext);
   const [loading, setLoading] = useState(false);
-
-  // async function login(ev) {
-  //   ev.preventDefault();
-  //   setLoading(true);
-  //   const response = await fetch(LOGIN_API, {
-  //     method: "POST",
-  //     body: JSON.stringify({ username, password }),
-  //     headers: { "Content-Type": "application/json" },
-  //     credentials: "include",
-  //   });
-  //   if (response.ok) {
-  //     response.json().then((userInfo) => {
-  //       setUserInfo(userInfo);
-  //       toast.success("You have successfully logged in.");
-  //       setRedirect(true);
-  //     });
-  //   } else {
-  //     toast.error("Wrong Credentials. Please try again");
-  //   }
-  //   setLoading(false);
-  // }
 
   async function login(ev) {
     ev.preventDefault();
@@ -38,7 +17,7 @@ const LoginPage = () => {
     try {
       const response = await fetch(LOGIN_API, {
         method: "POST",
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({ usernameOrEmail, password }),
         headers: { "Content-Type": "application/json" },
         credentials: "include",
       });
@@ -73,9 +52,9 @@ const LoginPage = () => {
       <h1>Login</h1>
       <input
         type="text"
-        placeholder="username"
-        value={username}
-        onChange={(ev) => setUsername(ev.target.value)}
+        placeholder="username or email"
+        value={usernameOrEmail}
+        onChange={(ev) => setUsernameOrEmail(ev.target.value)}
       />
       <input
         type="password"
