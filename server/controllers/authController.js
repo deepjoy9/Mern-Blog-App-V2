@@ -22,8 +22,16 @@ exports.register = async (req, res) => {
       .json({ error: "Password should be at least 6 characters long." });
   }
 
-  const salt = bcrypt.genSaltSync(10);
   try {
+    // Check if username or email already exists in the database
+    const existingUser = await User.findOne({ $or: [{ username }, { email }] });
+    if (existingUser) {
+      return res.status(400).json({
+        error:
+          "Username or email already exists. Please choose a different one.",
+      });
+    }
+    const salt = bcrypt.genSaltSync(10);
     const userDoc = await User.create({
       username,
       email,
@@ -32,12 +40,7 @@ exports.register = async (req, res) => {
     res.json(userDoc);
   } catch (error) {
     console.error("Error registering user:", error);
-    // MongoDB duplicate key error
-    if (error.code === 11000) {
-      return res.status(400).json({
-        error: "Username already exists. Please choose a different one.",
-      });
-    }
+
     res
       .status(500)
       .json({ error: "Registration failed. Please try again later." });
