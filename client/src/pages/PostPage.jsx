@@ -51,7 +51,9 @@ const PostPage = () => {
     <div className="post-page">
       <h1>{postInfo.title}</h1>
       <time>{formatISO9075(new Date(postInfo.createdAt))}</time>
-      <div className="author">by @{postInfo.author.username}</div>
+      <div className="author">
+        by @{postInfo.author ? postInfo.author.username : "Unknown"}
+      </div>
       {userInfo && userInfo.id === postInfo.author._id && (
         <div className="edit-delete-container">
           <div className="edit-delete-row">
