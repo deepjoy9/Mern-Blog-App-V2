@@ -14,7 +14,13 @@ exports.register = async (req, res) => {
       .status(400)
       .json({ error: "Username should be between 4 and 20 characters long." });
   }
-
+  // Validate username format
+  const usernameRegex = /^[a-zA-Z0-9]+$/;
+  if (!usernameRegex.test(username)) {
+    return res
+      .status(400)
+      .json({ error: "Username can only contain letters and numbers" });
+  }
   // Validate password length
   if (password.length < 6) {
     return res
