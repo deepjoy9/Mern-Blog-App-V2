@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { UserContext } from "../contexts/UserContext";
 import { toast } from "react-toastify";
 import { LOGIN_API } from "../utils/apiConstants";
@@ -48,22 +48,28 @@ const LoginPage = () => {
   }
 
   return (
-    <form className="login" onSubmit={login}>
-      <h1>Login</h1>
-      <input
-        type="text"
-        placeholder="username or email"
-        value={usernameOrEmail}
-        onChange={(ev) => setUsernameOrEmail(ev.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="password"
-        value={password}
-        onChange={(ev) => setPassword(ev.target.value)}
-      />
-      <button>{loading ? "Loading..." : "Login"}</button>
-    </form>
+    <>
+      <form className="login" onSubmit={login}>
+        <h1>Login</h1>
+        <input
+          type="text"
+          placeholder="username or email"
+          value={usernameOrEmail}
+          onChange={(ev) => setUsernameOrEmail(ev.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="password"
+          value={password}
+          onChange={(ev) => setPassword(ev.target.value)}
+        />
+        <button>{loading ? "Loading..." : "Login"}</button>
+      </form>
+      <div className="link-section">
+        <p>Dont Have an account?</p>
+        <Link to="/register">Register</Link>
+      </div>
+    </>
   );
 };
 

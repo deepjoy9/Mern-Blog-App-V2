@@ -120,6 +120,18 @@ form.login h1,
 form.register h1 {
   text-align: center;
 }
+.link-section {
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem; /* Adjust the gap as needed */
+  margin-top: 1.25rem; /* Adjust the top margin as needed */
+}
+.link-section a {
+  text-decoration: none;
+}
 
 /* PostPage */
 div.post-page div.image {
