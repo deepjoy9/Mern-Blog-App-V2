@@ -49,46 +49,58 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    const { username, password } = req.body;
-    if (!username || !password) {
-      return res
-        .status(400)
-        .json({ error: "Username and password are required !!" });
+    const { usernameOrEmail, password } = req.body;
+    if (!usernameOrEmail || !password) {
+      return res.status(400).json({ error: "Please fill in all fields !!" });
     }
-    const userDoc = await User.findOne({ username });
+    // Check if the input is an email
+    const isEmail = usernameOrEmail.includes("@");
+
+    // Find the user based on email or username
+    let userDoc;
+    if (isEmail) {
+      userDoc = await User.findOne({ email: usernameOrEmail });
+    } else {
+      userDoc = await User.findOne({ username: usernameOrEmail });
+    }
     if (!userDoc) {
       return res
         .status(400)
-        .json({ error: "Invalid username or password. Please try again." });
+        .json({ error: "Invalid credentials. Please try again." });
     }
     const passOk = bcrypt.compareSync(password, userDoc.password);
 
     if (!passOk) {
       return res
         .status(400)
-        .json({ error: "Invalid username or password. Please try again." });
+        .json({ error: "Invalid credentials. Please try again." });
     }
 
-    jwt.sign({ username, id: userDoc._id }, secret, {}, (err, token) => {
-      if (err) {
-        console.error("Error generating JWT:", err);
-        return res
-          .status(500)
-          .json({ error: "Internal Server Error. Please try again later." });
+    jwt.sign(
+      { username: userDoc.username, id: userDoc._id },
+      secret,
+      {},
+      (err, token) => {
+        if (err) {
+          console.error("Error generating JWT:", err);
+          return res
+            .status(500)
+            .json({ error: "Internal Server Error. Please try again later." });
+        }
+        const expiryDate = new Date(Date.now() + 3600000); // 1 hour
+        res
+          .cookie("token", token, {
+            sameSite: "none",
+            secure: true,
+            expires: expiryDate,
+          })
+          .json({
+            id: userDoc._id,
+            username: userDoc.username,
+            email: userDoc.email,
+          });
       }
-
-      const expiryDate = new Date(Date.now() + 3600000); // 1 hour
-      res
-        .cookie("token", token, {
-          sameSite: "none",
-          secure: true,
-          expires: expiryDate,
-        })
-        .json({
-          id: userDoc._id,
-          username,
-        });
-    });
+    );
   } catch (error) {
     console.error("Error logging in:", error);
     res.status(500).json({ error: "Internal Server Error" });
