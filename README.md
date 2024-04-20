@@ -27,13 +27,13 @@ Welcome to Dev Diary, the ultimate fullstack blog application designed to empowe
 - **My Posts Page:** Provide logged-in users with a dedicated page to view and manage their created posts.
 - **Delete Post Functionality:** Empower users to manage their content by implementing the ability to delete posts.
 - **Cloudinary Implementation for Images:** Integrate Cloudinary for efficient storage and management of images uploaded within the application.
+- **Login/Register Validation:** Ensure data integrity and user security by implementing robust validation for login and registration forms.
+- **Enhanced Register Page:** Collect additional details during the registration process to improve user profiles and enhance personalized experiences.
 
 ## Upcoming Features (v2 app):
 
 - **Improved Login/Register UI:** Enhance user experience with a more intuitive and visually appealing interface for the login and registration process.
-- **Login/Register Validation:** Ensure data integrity and user security by implementing robust validation for login and registration forms.
 - **Display Username for Logged-in Users:** Personalize the user experience by displaying the username for logged-in users.
-- **Enhanced Register Page:** Collect additional details during the registration process to improve user profiles and enhance personalized experiences.
 - **Database Model Improvement:** Optimize database models for better performance, scalability, and maintainability.
 
 ## Tech Stack:
