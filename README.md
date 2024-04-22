@@ -29,6 +29,7 @@ Welcome to Dev Diary, the ultimate fullstack blog application designed to empowe
 - **Cloudinary Implementation for Images:** Integrate Cloudinary for efficient storage and management of images uploaded within the application.
 - **Login/Register Validation:** Ensure data integrity and user security by implementing robust validation for login and registration forms.
 - **Enhanced Register Page:** Collect additional details during the registration process to improve user profiles and enhance personalized experiences.
+- **Shimmer UI:** Implement shimmer UI to provide a smooth transition and indicate loading states, enhancing the overall user experience.
 
 ## Upcoming Features (v2 app):
 
