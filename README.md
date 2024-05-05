@@ -33,9 +33,11 @@ Welcome to Dev Diary, the ultimate fullstack blog application designed to empowe
 
 ## Upcoming Features (v2 app):
 
-- **Improved Login/Register UI:** Enhance user experience with a more intuitive and visually appealing interface for the login and registration process.
 - **Display Username for Logged-in Users:** Personalize the user experience by displaying the username for logged-in users.
 - **Database Model Improvement:** Optimize database models for better performance, scalability, and maintainability.
+- **Profile Page**: Introduce a dedicated profile page for users to view and manage their account details and preferences.
+- **Post Likes**: Enable users to like posts created by others, fostering engagement and interaction within the community.
+- **Post Comments**: Allow users to engage with each other by commenting on posts made by others, facilitating communication and collaboration within the community.
 
 ## Tech Stack:
 
