@@ -13,10 +13,10 @@ const CreatePost = () => {
   const [redirect, setRedirect] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  async function createNewPost(ev) {
-    ev.preventDefault();
+  const createNewPost = async (event) => {
+    event.preventDefault();
+    setLoading(true);
     try {
-      setLoading(true);
       const data = new FormData();
       data.set("title", title);
       data.set("summary", summary);
@@ -35,6 +35,7 @@ const CreatePost = () => {
           errorMessage.error || "Failed to create post. Please try again later."
         );
       }
+
       // Post created successfully
       setRedirect(true);
       toast.success("Post created successfully!");
@@ -46,7 +47,7 @@ const CreatePost = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   if (redirect) {
     return <Navigate to={"/"} />;
@@ -72,7 +73,7 @@ const CreatePost = () => {
         onChange={(ev) => setFiles(ev.target.files)}
       />
       <Editor value={content} onChange={setContent} />
-      <button style={{ marginTop: "5px" }}>
+      <button style={{ marginTop: "5px" }} disabled={loading}>
         {loading ? "Loading..." : "Create Post"}
       </button>
     </form>
