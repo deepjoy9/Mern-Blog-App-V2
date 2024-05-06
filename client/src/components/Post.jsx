@@ -7,7 +7,7 @@ const Post = ({ _id, title, summary, cover, content, createdAt, author }) => {
     <div className="post">
       <div className="image">
         <Link to={`/post/${_id}`}>
-          <img src={cover} alt="" />
+          <img src={cover} alt={title} loading="lazy" />
         </Link>
       </div>
       <div className="texts">
@@ -15,7 +15,7 @@ const Post = ({ _id, title, summary, cover, content, createdAt, author }) => {
           <h2>{title}</h2>
         </Link>
         <p className="info">
-          <a className="author">{author ? author.username : "Unknown"}</a>
+          <a className="author">{author?.username ?? "Unknown"}</a>
           <time>{formatISO9075(new Date(createdAt))}</time>
         </p>
         <p className="summary">{summary}</p>
