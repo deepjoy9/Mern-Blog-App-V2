@@ -14,17 +14,29 @@ const EditPost = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetch(`${POSTS_API}/${id}`).then((response) => {
-      response.json().then((postInfo) => {
-        setTitle(postInfo.title);
-        setContent(postInfo.content);
-        setSummary(postInfo.summary);
-      });
-    });
+    const fetchPostData = async () => {
+      try {
+        const response = await fetch(`${POSTS_API}/${id}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch post. Please try again later.");
+        }
+        const postData = await response.json();
+        setTitle(postData.title);
+        setContent(postData.content);
+        setSummary(postData.summary);
+      } catch (error) {
+        console.error("Error fetching post:", error.message);
+        toast.error(
+          error.message ||
+            "An unexpected error occurred. Please try again later."
+        );
+      }
+    };
+    fetchPostData();
   }, []);
 
-  async function updatePost(ev) {
-    ev.preventDefault();
+  const updatePost = async (event) => {
+    event.preventDefault();
     try {
       setLoading(true);
       const data = new FormData();
@@ -33,7 +45,7 @@ const EditPost = () => {
       data.set("content", content);
       data.set("id", id);
       if (files?.[0]) {
-        data.set("file", files?.[0]);
+        data.set("file", files[0]);
       }
       const response = await fetch(POSTS_API, {
         method: "PUT",
@@ -57,7 +69,7 @@ const EditPost = () => {
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   if (redirect) {
     return <Navigate to={"/"} />;
@@ -66,13 +78,13 @@ const EditPost = () => {
   return (
     <form onSubmit={updatePost}>
       <input
-        type="title"
+        type="text"
         placeholder={"Title"}
         value={title}
         onChange={(ev) => setTitle(ev.target.value)}
       />
       <input
-        type="summary"
+        type="text"
         placeholder={"Summary"}
         value={summary}
         onChange={(ev) => setSummary(ev.target.value)}
@@ -83,7 +95,7 @@ const EditPost = () => {
         onChange={(ev) => setFiles(ev.target.files)}
       />
       <Editor onChange={setContent} value={content} />
-      <button style={{ marginTop: "5px" }}>
+      <button style={{ marginTop: "5px" }} disabled={loading}>
         {loading ? "Loading..." : "Update post"}
       </button>
     </form>
