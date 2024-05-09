@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import Post from "../components/Post";
 import { POSTS_API } from "../utils/apiConstants";
 import { UserContext } from "../contexts/UserContext";
@@ -10,6 +10,7 @@ const MyPostsPage = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log("Component is re-rendering...");
     if (userInfo && userInfo.id) {
       fetchPosts(userInfo.id);
     }
@@ -31,12 +32,14 @@ const MyPostsPage = () => {
     }
   };
 
+  const memoizedPosts = useMemo(() => posts, [posts]);
+
   return (
     <>
       {loading ? (
         <ShimmerList />
-      ) : posts.length > 0 ? (
-        posts.map((post) => <Post key={post._id} {...post} />)
+      ) : memoizedPosts.length > 0 ? (
+        memoizedPosts.map((post) => <Post key={post._id} {...post} />)
       ) : (
         <div className="no-posts">
           <p>Looks like you haven't created any posts yet.</p>
