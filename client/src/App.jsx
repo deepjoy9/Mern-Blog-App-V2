@@ -2,19 +2,23 @@ import "./App.css";
 import Layout from "./components/Layout";
 import { Route, Routes } from "react-router-dom";
 import IndexPage from "./pages/IndexPage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
 import { UserContextProvider } from "./contexts/UserContext";
-import CreatePost from "./pages/CreatePost";
-import PostPage from "./pages/PostPage";
-import EditPost from "./pages/EditPost";
 import ErrorPage from "./pages/ErrorPage";
-import MyPostsPage from "./pages/MyPostsPage";
 import ProtectedRoute from "./pages/ProtectedRoute";
+import { Suspense, lazy } from "react";
+
+// Lazy loaded components
+const LoginPage = lazy(() => import("./pages/LoginPage"));
+const RegisterPage = lazy(() => import("./pages/RegisterPage"));
+const CreatePost = lazy(() => import("./pages/CreatePost"));
+const PostPage = lazy(() => import("./pages/PostPage"));
+const EditPost = lazy(() => import("./pages/EditPost"));
+const MyPostsPage = lazy(() => import("./pages/MyPostsPage"));
 
 function App() {
   return (
     <UserContextProvider>
+      <Suspense>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<IndexPage />} />
@@ -28,6 +32,7 @@ function App() {
           <Route path="*" element={<ErrorPage />} />
         </Route>
       </Routes>
+      </Suspense>
     </UserContextProvider>
   );
 }
