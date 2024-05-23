@@ -47,3 +47,5 @@ Welcome to Dev Diary, the ultimate fullstack blog application designed to empowe
 - **Authentication:** JWT (JSON Web Tokens)
 - **Routing:** react-router-dom
 - **Notification:** React Toastify
+- **Rich Text Editor:** React Quill
+- **Image Management:** Cloudinary
