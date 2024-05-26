@@ -6,6 +6,11 @@ import { LOGOUT_API, USER_PROFILE_API } from "../utils/apiConstants";
 
 const Header = () => {
   const { userInfo, setUserInfo } = useContext(UserContext);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+  };
 
   async function fetchUserProfile() {
     try {
@@ -49,7 +54,10 @@ const Header = () => {
       <Link to="/" className="logo">
         Dev Diary
       </Link>
-      <nav>
+      <nav
+        className={`nav-links ${isMenuOpen ? "open" : ""}`}
+        onClick={toggleMenu}
+      >
         <Link to="/" className="all-posts">
           All Posts
         </Link>
@@ -67,6 +75,9 @@ const Header = () => {
           </>
         )}
       </nav>
+      <div className="hamburger" onClick={toggleMenu}>
+        &#9776;
+      </div>
     </header>
   );
 };
