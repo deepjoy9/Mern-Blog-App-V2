@@ -48,12 +48,15 @@ const PostPage = () => {
 
   if (!postInfo) return null;
 
+  const showEditDeleteButtons =
+    userInfo?.id === postInfo?.author?._id && userInfo?.id !== undefined;
+
   return (
     <div className="post-page">
       <h1>{postInfo?.title ?? "Unknown"}</h1>
       <time>{formatISO9075(new Date(postInfo?.createdAt ?? "Unknown"))}</time>
       <div className="author">by @{postInfo.author?.username ?? "Unknown"}</div>
-      {userInfo?.id === postInfo?.author?._id && (
+      {showEditDeleteButtons && (
         <div className="edit-delete-container">
           <div className="edit-delete-row">
             <Link className="edit-btn" to={`/edit/${postInfo._id}`}>
