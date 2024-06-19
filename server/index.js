@@ -24,6 +24,11 @@ const postRoutes = require("./routes/postRoutes");
 app.use("/api/auth", authRoutes);
 app.use("/api/posts", postRoutes);
 
+// Test route
+app.get("/", (req, res) => {
+  res.send("Server Working!");
+});
+
 // Connect to MongoDB database
 connectDB()
   .then(() => {
